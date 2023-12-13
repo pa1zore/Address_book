@@ -58,7 +58,9 @@ public class AddressBookMain {
         }
         //scanner class is used to take input from keyboard file etc
         Scanner sc= new Scanner(System.in);
+        //count is used to check name of each person matches with user input name
         int count=0;
+        //flag variable is to check user input name found or not
         int flag=0;
         System.out.println("enter name of person to edit details");
         //reading name from console
@@ -66,21 +68,24 @@ public class AddressBookMain {
         //iteration until length of arraylist
        while(count<con.size())
        {
+           //checking name of user input is matches with any name of stored contact
            if(con.get(count).first_name.equals(cname))
            {
                System.out.println("name fount successfully");
+
                flag=1;
-               break;
+               break;//as name has been found so no need to iterate break used to go out of loop after condition true
            }
            count++;
        }
 
-
+         // if flag=0 means name is not found and so we are priting message and and stop execution
         if(flag==0)
         {
             System.out.println(" invalid name \nplease enter valid name");
             System.exit(0);
         }
+        // flag=1 means name is found and index is store in count varible so we can update details by index of that contact
         else if(flag==1)
         {     sc.nextLine();
             System.out.println("enter new address");
@@ -98,6 +103,7 @@ public class AddressBookMain {
             con.get(count).email=sc.nextLine();
             System.out.println("updation done successfully");
         }
+        // to print all the inpformation after updation
         for(int i=0;i<con.size();i++)
         {
             System.out.println("--------------------------------------------------------");
