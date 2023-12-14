@@ -37,78 +37,73 @@ class Contacts
     }
 }
 public class AddressBookMain {
+    // scanner class is used to take input from keyboard file etc
+    static Scanner sc = new Scanner(System.in);
+    static ArrayList<Contacts> con = new ArrayList<Contacts>();
+    // creating objects and giving inputs from constructor
+
     public static void main(String[] args) {
         System.out.println("welcome to address book program");
         // decleared arraylist for multiple objects to be created
-        ArrayList<Contacts> con= new ArrayList<Contacts>();
-        //creating objects and giving inputs from constructor
-        Contacts c1= new Contacts("david","warner","n9/m2,tvcentre,cidco","london","england",433332,"9766943450","abcd@gmail.com");
-        Contacts c2= new Contacts("michel","hustey","citymall,tvcentre,cidco","mumbai","maharashtra",442332,"9766998450","addfsd@gmail.com");
-        Contacts c3= new Contacts("collin","munro","bridge road,tvcentre,cidco","delhi","uttar pradesh",476532,"9723943450","nnsdfgcd@gmail.com");
-        //to add objects of contact class in arraylist
-        con.add(c1);
-        con.add(c2);
-        con.add(c3);
-//to print all person's contact information
-        for(int i=0;i<con.size();i++)
-        {
-            System.out.println("--------------------------------------------------------");
-            System.out.println(con.get(i).toString());
-            System.out.println("--------------------------------------------------------");
-        }
-        //scanner class is used to take input from keyboard file etc
-        Scanner sc= new Scanner(System.in);
-        //count is used to check name of each person matches with user input name
-        int count=0;
-        //flag variable is to check user input name found or not
-        int flag=0;
-        System.out.println("enter name of person to edit details");
-        //reading name from console
-        String cname=sc.next();
-        //iteration until length of arraylist
-       while(count<con.size())
-       {
-           //checking name of user input is matches with any name of stored contact
-           if(con.get(count).first_name.equals(cname))
-           {
-               System.out.println("name fount successfully");
+        ArrayList<Contacts> con = new ArrayList<Contacts>();
+        // creating objects and giving inputs from constructor
 
-               flag=1;
-               break;//as name has been found so no need to iterate break used to go out of loop after condition true
-           }
-           count++;
-       }
+        do {
+            System.out.println(
+                    "enter your choice\n press 1: add contact \n press 2: print all contacts \n press 3: to exit\n");
+            int choice = sc.nextInt();
+            switch (choice) {
+                case 1:
 
-         // if flag=0 means name is not found and so we are priting message and and stop execution
-        if(flag==0)
-        {
-            System.out.println(" invalid name \nplease enter valid name");
-            System.exit(0);
-        }
-        // flag=1 means name is found and index is store in count varible so we can update details by index of that contact
-        else if(flag==1)
-        {     sc.nextLine();
-            System.out.println("enter new address");
-            con.get(count).address=sc.nextLine();
-            System.out.println("enter new city");
-            con.get(count).city=sc.nextLine();
-            System.out.println("enter new state");
-            con.get(count).state=sc.nextLine();
-            System.out.println("enter new zip");
-            con.get(count).zip=sc.nextInt();
-            sc.nextLine();
-            System.out.println("enter new phone number");
-            con.get(count).phone_number=sc.nextLine();
-            System.out.println("enter new email address");
-            con.get(count).email=sc.nextLine();
-            System.out.println("updation done successfully");
-        }
-        // to print all the inpformation after updation
-        for(int i=0;i<con.size();i++)
-        {
-            System.out.println("--------------------------------------------------------");
-            System.out.println(con.get(i).toString());
-            System.out.println("--------------------------------------------------------");
+                    add_contact();
+                    break;
+
+                case 2:
+                    print_contact();
+                    break;
+                case 3:
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("wrong choice please enter valid input");
+                    break;
+            }
+
+        } while (true);
+
+    }
+    public static void add_contact() {
+        sc.nextLine();// to avoid /n issue in after taking integer as input
+        System.out.println("enter first name ");
+        String first_name = sc.nextLine();
+        System.out.println("enter last name ");
+        String last_name = sc.nextLine();
+        System.out.println("enter address ");
+        String address = sc.nextLine();
+        System.out.println("enter  city");
+        String city = sc.nextLine();
+        System.out.println("enter  state");
+        String state = sc.nextLine();
+        System.out.println("enter zip-code");
+        int zip = sc.nextInt();
+        sc.nextLine();
+        System.out.println("enter phone number");
+        String phone_number = sc.nextLine();
+        System.out.println("enter email");
+        String email = sc.nextLine();
+        Contacts cont = new Contacts(first_name, last_name, address, city, state, zip, phone_number, email);
+        con.add(cont);
+    }
+
+    public static void print_contact() {
+        if (con.size() == 0) {
+            System.out.println("nothing to print you need to add contact first");
+        } else {
+            for (int i = 0; i < con.size(); i++) {
+                System.out.println("***********************************");
+                System.out.println(con.get(i));
+            }
         }
     }
 
