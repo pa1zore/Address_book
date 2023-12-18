@@ -6,7 +6,7 @@ import java.util.Scanner;
 //contact class is created for storing information of person
 class Contacts {
     // declearing each varible with respective datatype
-    String first_name;
+    String first_name  ;
     String last_name;
     String address;
     String city;
