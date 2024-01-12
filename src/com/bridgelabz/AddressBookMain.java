@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 //contact class is created for storing information of person
 class Contacts {
@@ -51,6 +53,9 @@ class AddressBook
     public AddressBook( String addressbookname)
     {
         this.addressbookname=addressbookname;
+
+
+
         choice();
     }
     public void choice( ) {
@@ -93,7 +98,16 @@ class AddressBook
     public  void add_contact() {
         sc.nextLine();// to avoid /n issue in after taking integer as input
         System.out.println("enter first name ");
+
         String first_name = sc.nextLine();
+        // this code is specially check to whether the first name is already present in string
+        // or not by using java api strema methods
+        boolean isNamePresent = con.stream().anyMatch(i->i.first_name.equals(first_name));
+        if(isNamePresent)
+        {
+            System.out.println("name is already exist  ");
+            System.exit(0); ;
+        }
         System.out.println("enter last name ");
         String last_name = sc.nextLine();
         System.out.println("enter address ");
