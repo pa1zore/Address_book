@@ -1,6 +1,8 @@
 package com.bridgelabz;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 //contact class is created for storing information of person
@@ -38,16 +40,22 @@ class Contacts {
     }
 }
 
-public class AddressBookMain {
-    // scanner class is used to take input from keyboard file etc
+
+class AddressBook
+{
     static Scanner sc = new Scanner(System.in);
     static ArrayList<Contacts> con = new ArrayList<Contacts>();
     // creating objects and giving inputs from constructor
-
-    public static void main(String[] args) {
-        System.out.println("welcome to address book program");
+      String addressbookname;
+      boolean k=true;
+    public AddressBook( String addressbookname)
+    {
+        this.addressbookname=addressbookname;
+        choice();
+    }
+    public void choice( ) {
         // decleared arraylist for multiple objects to be created
-        ArrayList<Contacts> con = new ArrayList<Contacts>();
+
         // creating objects and giving inputs from constructor
 
         do {
@@ -69,7 +77,7 @@ public class AddressBookMain {
                     print_contact();
                     break;
                 case 5:
-                    System.exit(0);
+                    k=  false;
                     break;
 
                 default:
@@ -77,11 +85,12 @@ public class AddressBookMain {
                     break;
             }
 
-        } while (true);
+        } while (k);
 
     }
 
-    public static void add_contact() {
+
+    public  void add_contact() {
         sc.nextLine();// to avoid /n issue in after taking integer as input
         System.out.println("enter first name ");
         String first_name = sc.nextLine();
@@ -104,7 +113,7 @@ public class AddressBookMain {
         con.add(cont);
     }
 
-    public static void print_contact() {
+    public  void print_contact() {
         if (con.size() == 0) {
             System.out.println("nothing to print you need to add contact first");
         } else {
@@ -115,7 +124,7 @@ public class AddressBookMain {
         }
     }
 
-    public static void edit_contact() {
+    public  void edit_contact() {
         int count = check();//calling check methods
 
         if (count == -1) {
@@ -144,7 +153,7 @@ public class AddressBookMain {
         }
     }
 
-    public static void remove_contact() {
+    public  void remove_contact() {
         int count = check();//calling check method
         if (count == -1) {
             System.out.println(" invalid name \nplease enter valid name");
@@ -155,7 +164,7 @@ public class AddressBookMain {
         }
     }
 
-    public static int check() {
+    public  int check() {
         sc.nextLine();// to avoid /n issue in after taking integer as input
         int count = 0;
         // flag variable is to check user input name found or not
@@ -184,5 +193,26 @@ public class AddressBookMain {
         }
         return -1;
     }
+}
+
+public class AddressBookMain {
+
+    static Map<String,AddressBook> mapbook = new HashMap<>() ;
+    public static void main(String[] args) {
+        System.out.println("welcome to address book program");
+
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("enter the name of address book");
+        String addressbook_name=sc.nextLine();
+
+        mapbook.put(addressbook_name,new AddressBook(addressbook_name));
+
+
+
+
+
+    }
+
 
 }
