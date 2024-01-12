@@ -1,9 +1,6 @@
 package com.bridgelabz;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,7 +43,7 @@ class Contacts {
 class AddressBook
 {
     static Scanner sc = new Scanner(System.in);
-    static ArrayList<Contacts> con = new ArrayList<Contacts>();
+     ArrayList<Contacts> con = new ArrayList<Contacts>();
     // creating objects and giving inputs from constructor
       String addressbookname;
       boolean k=true;
@@ -95,7 +92,7 @@ class AddressBook
     }
 
 
-    public  void add_contact() {
+    public  boolean add_contact() {
         sc.nextLine();// to avoid /n issue in after taking integer as input
         System.out.println("enter first name ");
 
@@ -106,7 +103,7 @@ class AddressBook
         if(isNamePresent)
         {
             System.out.println("name is already exist  ");
-            System.exit(0); ;
+            return false;
         }
         System.out.println("enter last name ");
         String last_name = sc.nextLine();
@@ -125,24 +122,29 @@ class AddressBook
         String email = sc.nextLine();
         Contacts cont = new Contacts(first_name, last_name, address, city, state, zip, phone_number, email);
         con.add(cont);
+        return true;
     }
 
-    public  void print_contact() {
+    public  boolean print_contact() {
         if (con.size() == 0) {
             System.out.println("nothing to print you need to add contact first");
+            return  false;
         } else {
             for (int i = 0; i < con.size(); i++) {
                 System.out.println("***********************************");
                 System.out.println(con.get(i));
+
             }
         }
+        return true;
     }
 
-    public  void edit_contact() {
+    public  boolean edit_contact() {
         int count = check();//calling check methods
 
         if (count == -1) {
             System.out.println(" invalid name \nplease enter valid name");
+            return  false;
 
         }
         // flag=1 means name is found and index is store in count varible so we can
@@ -165,6 +167,7 @@ class AddressBook
             con.get(count).email = sc.nextLine();
             System.out.println("updation done successfully");
         }
+        return true;
     }
 
     public  void remove_contact() {
@@ -211,9 +214,9 @@ class AddressBook
 
 public class AddressBookMain {
 
-    static Map<String,AddressBook> mapbook = new HashMap<>() ;
     public static void main(String[] args) {
         System.out.println("welcome to address book program");
+        Map<String,AddressBook> mapbook = new HashMap<>() ;
 
 
         Scanner sc = new Scanner(System.in);
@@ -221,6 +224,15 @@ public class AddressBookMain {
         String addressbook_name=sc.nextLine();
 
         mapbook.put(addressbook_name,new AddressBook(addressbook_name));
+        System.out.println("enter the name of city");
+        String targetcity= sc.nextLine();
+        List<String> nameInTargetCity= mapbook.values().stream().
+                flatMap(mapboo->mapboo.con.stream())
+                .filter(contacts -> contacts.city.equals(targetcity))
+                .map(contacts -> contacts.first_name+ " "+contacts.last_name)
+                .collect(Collectors.toList());
+        System.out.println(nameInTargetCity);
+
 
 
 
