@@ -30,7 +30,15 @@ class Contacts {
         this.email = email;
 
     }
-
+  //gettr for city
+    public String getCity() {
+        return city;
+    }
+// getter for fist name
+    public String getFirst_name() {
+        return first_name;
+    }
+  // override toString for printing
     @Override
     public String toString() {
 
@@ -39,11 +47,13 @@ class Contacts {
     }
 }
 
-
+//address book class to manage contacts
 class AddressBook
 {
     static Scanner sc = new Scanner(System.in);
      ArrayList<Contacts> con = new ArrayList<Contacts>();
+
+
     // creating objects and giving inputs from constructor
       String addressbookname;
       boolean k=true;
@@ -213,32 +223,96 @@ class AddressBook
 }
 
 public class AddressBookMain {
+    static Scanner sc = new Scanner(System.in);
+    static HashMap<String, AddressBook> mapbook = new HashMap<>();
 
     public static void main(String[] args) {
-        System.out.println("welcome to address book program");
-        Map<String,AddressBook> mapbook = new HashMap<>() ;
+        System.out.println("Welcome to the Address Book program");
+        boolean bb = true;
 
+        while (bb) {
+            System.out.println("Enter your choice:");
+            System.out.println("Add new address book:                   1");
+            System.out.println("Search person in target city:           2");
+            System.out.println("View persons by city:                   3");
+            System.out.println("Exit:                                   4");
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("enter the name of address book");
-        String addressbook_name=sc.nextLine();
+            int choice = new Scanner(System.in).nextInt();
 
-        mapbook.put(addressbook_name,new AddressBook(addressbook_name));
-        System.out.println("enter the name of city");
-        String targetcity= sc.nextLine();
-        List<String> nameInTargetCity= mapbook.values().stream().
-                flatMap(mapboo->mapboo.con.stream())
-                .filter(contacts -> contacts.city.equals(targetcity))
-                .map(contacts -> contacts.first_name+ " "+contacts.last_name)
-                .collect(Collectors.toList());
-        System.out.println(nameInTargetCity);
-
-
-
-
-
-
+            switch (choice) {
+                case 1:
+                    add_Addressbook();
+                    break;
+                case 2:
+                    toSearchPersonByTargetCity();
+                    break;
+                case 3:
+                    toViewPersonAccordingToCity();
+                    break;
+                case 4:
+                    bb = false;
+                    break;
+                default:
+                    System.out.println("Wrong choice, please enter a valid one");
+                    break;
+            }
+        }
     }
 
+    static boolean add_Addressbook() {
+        System.out.println("Enter the name of the new address book");
+        String addressbook_name = sc.nextLine();
 
+        if (mapbook.containsKey(addressbook_name)) {
+            System.out.println("Address book is already present");
+            return false;
+        } else {
+            mapbook.put(addressbook_name, new AddressBook(addressbook_name));
+            return true;
+        }
+    }
+
+    static boolean toSearchPersonByTargetCity() {
+        // Ability to search for a person in a city across multiple address books
+        if (mapbook.isEmpty()) {
+            System.out.println("Nothing to print");
+            return false;
+        }
+
+        System.out.println("Enter the name of the city");
+        String targetcity = sc.nextLine();
+        List<String> nameInTargetCity = mapbook.values().stream()
+                .flatMap(mapboo -> mapboo.con.stream())
+                .filter(contacts -> contacts.city.equals(targetcity))
+                .map(contacts -> contacts.first_name + " " + contacts.last_name)
+                .collect(Collectors.toList());
+
+        System.out.println(nameInTargetCity);
+        return true;
+    }
+
+    static boolean toViewPersonAccordingToCity() {
+        if (mapbook.isEmpty()) {
+            System.out.println("Nothing to print");
+            return false;
+        }
+
+        // Get all unique cities
+        Set<String> cityList = mapbook.values().stream()
+                .flatMap(AddressBook -> AddressBook.con.stream())
+                .map(Contacts::getCity)
+                .collect(Collectors.toSet());
+
+        // Print names stored in contacts according to different city names
+        for (String city : cityList) {
+            System.out.println("City: " + city);
+            mapbook.values().stream()
+                    .flatMap(addressBook -> addressBook.con.stream())
+                    .filter(contacts -> contacts.getCity().equals(city))
+                    .map(Contacts::getFirst_name)
+                    .forEach(System.out::println);
+            System.out.println();
+        }
+        return true;
+    }
 }
