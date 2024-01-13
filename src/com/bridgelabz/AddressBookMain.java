@@ -401,6 +401,62 @@ public class AddressBookMain {
         System.out.println("Contacts sorted alphabetically by name.");
         return  true;
     }
-   
+    static boolean sortEntriesByCity() {
+        if (mapbook.isEmpty()) {
+            System.out.println("No address books available.");
+            return false;
+        }
+
+        // Sort contacts within each address book by city
+        mapbook.values().forEach(addressBook -> {
+            List<Contacts> sortedContacts = addressBook.contacts.stream()
+                    .sorted(Comparator.comparing(Contacts::getCity))
+                    .collect(Collectors.toList());
+            addressBook.contacts.clear();
+            addressBook.contacts.addAll(sortedContacts);
+        });
+
+        System.out.println("Contacts sorted alphabetically by city.");
+        return true;
+    }
+
+    static boolean sortEntriesByState() {
+        if (mapbook.isEmpty()) {
+            System.out.println("No address books available.");
+            return false;
+        }
+
+        // Sort contacts within each address book by state
+        mapbook.values().forEach(addressBook -> {
+            List<Contacts> sortedContacts = addressBook.contacts.stream()
+                    .sorted(Comparator.comparing(Contacts::getState))
+                    .collect(Collectors.toList());
+            addressBook.contacts.clear();
+            addressBook.contacts.addAll(sortedContacts);
+        });
+
+        System.out.println("Contacts sorted alphabetically by state.");
+        return true;
+    }
+
+    static boolean sortEntriesByZip() {
+        if (mapbook.isEmpty()) {
+            System.out.println("No address books available.");
+            return false;
+        }
+
+        // Sort contacts within each address book by zip
+        mapbook.values().forEach(addressBook -> {
+            List<Contacts> sortedContacts = addressBook.contacts.stream()
+                    .sorted(Comparator.comparingInt(Contacts::getZip))
+                    .collect(Collectors.toList());
+            addressBook.contacts.clear();
+            addressBook.contacts.addAll(sortedContacts);
+        });
+
+        System.out.println("Contacts sorted by zip.");
+        return true;
+    }
+
 
 }
