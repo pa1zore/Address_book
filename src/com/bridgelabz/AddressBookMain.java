@@ -38,7 +38,13 @@ class Contacts {
     public String getFirst_name() {
         return first_name;
     }
-  // override toString for printing
+    //getter for get state
+
+    public String getState() {
+        return state;
+    }
+
+    // override toString for printing
     @Override
     public String toString() {
 
@@ -51,7 +57,7 @@ class Contacts {
 class AddressBook
 {
     static Scanner sc = new Scanner(System.in);
-     ArrayList<Contacts> con = new ArrayList<Contacts>();
+     ArrayList<Contacts> contacts = new ArrayList<Contacts>();
 
 
     // creating objects and giving inputs from constructor
@@ -109,7 +115,7 @@ class AddressBook
         String first_name = sc.nextLine();
         // this code is specially check to whether the first name is already present in string
         // or not by using java api strema methods
-        boolean isNamePresent = con.stream().anyMatch(i->i.first_name.equals(first_name));
+        boolean isNamePresent = contacts.stream().anyMatch(i->i.first_name.equals(first_name));
         if(isNamePresent)
         {
             System.out.println("name is already exist  ");
@@ -131,18 +137,18 @@ class AddressBook
         System.out.println("enter email");
         String email = sc.nextLine();
         Contacts cont = new Contacts(first_name, last_name, address, city, state, zip, phone_number, email);
-        con.add(cont);
+        contacts.add(cont);
         return true;
     }
 
     public  boolean print_contact() {
-        if (con.size() == 0) {
+        if (contacts.size() == 0) {
             System.out.println("nothing to print you need to add contact first");
             return  false;
         } else {
-            for (int i = 0; i < con.size(); i++) {
+            for (int i = 0; i < contacts.size(); i++) {
                 System.out.println("***********************************");
-                System.out.println(con.get(i));
+                System.out.println(contacts.get(i));
 
             }
         }
@@ -162,19 +168,19 @@ class AddressBook
         else {
 
             System.out.println("enter new address");
-            con.get(count).address = sc.nextLine();
+            contacts.get(count).address = sc.nextLine();
             System.out.println("enter new city");
-            con.get(count).city = sc.nextLine();
+            contacts.get(count).city = sc.nextLine();
             System.out.println("enter new state");
-            con.get(count).state = sc.nextLine();
+            contacts.get(count).state = sc.nextLine();
             System.out.println("enter new zip");
-            con.get(count).zip = sc.nextInt();
+            contacts.get(count).zip = sc.nextInt();
             sc.nextLine();// after taking interger as input /n create ussue for that we are using this
             // method
             System.out.println("enter new phone number");
-            con.get(count).phone_number = sc.nextLine();
+            contacts.get(count).phone_number = sc.nextLine();
             System.out.println("enter new email address");
-            con.get(count).email = sc.nextLine();
+            contacts.get(count).email = sc.nextLine();
             System.out.println("updation done successfully");
         }
         return true;
@@ -186,7 +192,7 @@ class AddressBook
             System.out.println(" invalid name \nplease enter valid name");
 
         } else {
-            con.remove(count);
+            contacts.remove(count);
             System.out.println("contact removed successfully!!!");
         }
     }
@@ -195,7 +201,7 @@ class AddressBook
         sc.nextLine();// to avoid /n issue in after taking integer as input
         int count = 0;
         // flag variable is to check user input name found or not
-        if (con.size() == 0) {
+        if (contacts.size() == 0) {
             System.out.println(" No contact information to edit  ");
         } else {
             // int flag = 0;
@@ -203,9 +209,9 @@ class AddressBook
             // reading name from console
             String cname = sc.nextLine();
             // iteration until length of arraylist
-            while (count < con.size()) {
+            while (count < contacts.size()) {
                 // checking name of user input is matches with any name of stored contact
-                if (con.get(count).first_name.equals(cname)) {
+                if (contacts.get(count).first_name.equals(cname)) {
                     System.out.println("name fount successfully");
 
                     return count;
@@ -235,7 +241,9 @@ public class AddressBookMain {
             System.out.println("Add new address book:                   1");
             System.out.println("Search person in target city:           2");
             System.out.println("View persons by city:                   3");
-            System.out.println("Exit:                                   4");
+            System.out.println("Get count by city and state:            4");
+            System.out.println("sort emtries by name alphabatically     5");
+            System.out.println("Exit:                                   6");
 
             int choice = new Scanner(System.in).nextInt();
 
@@ -250,6 +258,13 @@ public class AddressBookMain {
                     toViewPersonAccordingToCity();
                     break;
                 case 4:
+                    getCountByCityAndState();
+                    break;
+                case 5:
+                    sortEntriesByName();
+                    break;
+
+                case 6:
                     bb = false;
                     break;
                 default:
@@ -282,7 +297,7 @@ public class AddressBookMain {
         System.out.println("Enter the name of the city");
         String targetcity = sc.nextLine();
         List<String> nameInTargetCity = mapbook.values().stream()
-                .flatMap(mapboo -> mapboo.con.stream())
+                .flatMap(mapboo -> mapboo.contacts.stream())
                 .filter(contacts -> contacts.city.equals(targetcity))
                 .map(contacts -> contacts.first_name + " " + contacts.last_name)
                 .collect(Collectors.toList());
@@ -299,7 +314,7 @@ public class AddressBookMain {
 
         // Get all unique cities
         Set<String> cityList = mapbook.values().stream()
-                .flatMap(AddressBook -> AddressBook.con.stream())
+                .flatMap(AddressBook -> AddressBook.contacts.stream())
                 .map(Contacts::getCity)
                 .collect(Collectors.toSet());
 
@@ -307,7 +322,7 @@ public class AddressBookMain {
         for (String city : cityList) {
             System.out.println("City: " + city);
             mapbook.values().stream()
-                    .flatMap(addressBook -> addressBook.con.stream())
+                    .flatMap(addressBook -> addressBook.contacts.stream())
                     .filter(contacts -> contacts.getCity().equals(city))
                     .map(Contacts::getFirst_name)
                     .forEach(System.out::println);
@@ -315,4 +330,47 @@ public class AddressBookMain {
         }
         return true;
     }
+    static void getCountByCityAndState() {
+        if (mapbook.isEmpty()) {
+            System.out.println("No address books available.");
+            return;
+        }
+
+        // Group contacts by city and state and count them
+        Map<String, Long> cityCount = mapbook.values().stream()
+                .flatMap(addressBook -> addressBook.contacts.stream())
+                .collect(Collectors.groupingBy(Contacts::getCity, Collectors.counting()));
+
+        Map<String, Long> stateCount = mapbook.values().stream()
+                .flatMap(addressBook -> addressBook.contacts.stream())
+                .collect(Collectors.groupingBy(Contacts::getState, Collectors.counting()));
+
+        // Print the count by city
+        System.out.println("Count of contacts by city:");
+        cityCount.forEach((city, count) -> System.out.println(city + ": " + count));
+
+        // Print the count by state
+        System.out.println("\nCount of contacts by state:");
+        stateCount.forEach((state, count) -> System.out.println(state + ": " + count));
+    }
+    static boolean sortEntriesByName()
+    {
+        if (mapbook.isEmpty()) {
+            System.out.println("No address books available.");
+            return false;
+        }
+
+        // Sort contacts within each address book by name
+        mapbook.values().forEach(addressBook -> {
+            List<Contacts> sortedContacts = addressBook.contacts.stream()
+                    .sorted(Comparator.comparing(Contacts::getFirst_name))
+                    .collect(Collectors.toList());
+            addressBook.contacts.clear();
+            addressBook.contacts.addAll(sortedContacts);
+        });
+
+        System.out.println("Contacts sorted alphabetically by name.");
+        return  true;
+    }
+
 }
