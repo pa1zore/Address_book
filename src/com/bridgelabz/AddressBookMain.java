@@ -1,5 +1,6 @@
 package com.bridgelabz;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -43,6 +44,23 @@ class Contacts {
     public String getState() {
         return state;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public int getZip() {
+        return zip;
+    }
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
 
     // override toString for printing
     @Override
@@ -243,7 +261,10 @@ public class AddressBookMain {
             System.out.println("View persons by city:                   3");
             System.out.println("Get count by city and state:            4");
             System.out.println("sort emtries by name alphabatically     5");
-            System.out.println("Exit:                                   6");
+            System.out.println("sort emtries by city alphabatically     6");
+            System.out.println("sort emtries by State alphabatically    7");
+            System.out.println("sort emtries by zip alphabatically      8");
+            System.out.println("Exit:                                   9");
 
             int choice = new Scanner(System.in).nextInt();
 
@@ -263,8 +284,16 @@ public class AddressBookMain {
                 case 5:
                     sortEntriesByName();
                     break;
-
                 case 6:
+                    sortEntriesByCity();
+                    break;
+                case 7:
+                    sortEntriesByState();
+                    break;
+                case 8:
+                    sortEntriesByZip();
+                    break;
+                case 9:
                     bb = false;
                     break;
                 default:
@@ -372,5 +401,6 @@ public class AddressBookMain {
         System.out.println("Contacts sorted alphabetically by name.");
         return  true;
     }
+   
 
 }
